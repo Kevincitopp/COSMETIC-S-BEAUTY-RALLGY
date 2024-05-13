@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot de Servicio al Cliente</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .chat-container {
+      width: 300px;
+      margin: 50px auto;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .chat-box {
+      height: 300px;
+      overflow-y: scroll;
+      padding: 10px;
+    }
+    .chat-input {
+      width: calc(100% - 20px);
+      padding: 5px;
+      border: none;
+      border-top: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-box" id="chat-box">
+      <p>Bienvenido al servicio al cliente. ¿En qué puedo ayudarte?</p>
+    </div>
+    <input type="text" class="chat-input" id="user-input" placeholder="Escribe tu mensaje...">
+  </div>
+
+  <script>
+    const chatBox = document.getElementById('chat-box');
+    const userInput = document.getElementById('user-input');
+
+    function addMessage(message, sender) {
+      const messageElement = document.createElement('p');
+      messageElement.textContent = message;
+      if (sender === 'user') {
+        messageElement.style.textAlign = 'right';
+        messageElement.style.color = '#007bff';
+      }
+      chatBox.appendChild(messageElement);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function chatbotResponse(message) {
+      let response = 'Lo siento, no entiendo esa pregunta.';
+      if (message.toLowerCase().includes('hola')) {
+        response = '¡Hola! ¿En qué puedo ayudarte con respecto a las bases de maquillaje?';
+      } else if (message.toLowerCase().includes('diferentes tipos')) {
+        response = 'Ofrecemos una variedad de bases de maquillaje, incluyendo líquidas, en polvo, y en crema. ¿Tienes alguna preferencia?';
+      } else if (message.toLowerCase().includes('cobertura')) {
+        response = 'Nuestras bases de maquillaje ofrecen diferentes niveles de cobertura, desde ligera hasta completa. ¿Qué tipo de cobertura estás buscando?';
+      } else if (message.toLowerCase().includes('precio')) {
+        response = 'El precio de nuestras bases de maquillaje varía dependiendo del tipo y la marca. ¿Hay alguna en particular que te interese?';
+      } else if (message.toLowerCase().includes('gracias')) {
+        response = '¡De nada! ¿Hay algo más en lo que pueda ayudarte?';
+      } else if (message.toLowerCase().includes('adiós')) {
+        response = '¡Hasta luego! Si tienes alguna otra pregunta, no dudes en escribirnos.';
+      }
+      return response;
+    }
+
+    function sendMessage() {
+      const message = userInput.value.trim();
+      if (message !== '') {
+        addMessage(message, 'user');
+        userInput.value = '';
+        const response = chatbotResponse(message);
+        setTimeout(() => addMessage(response), 500);
+      }
+    }
+
+    userInput.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
